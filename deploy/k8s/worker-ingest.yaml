@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook-ingest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook-ingest
+  template:
+    metadata:
+      labels:
+        app: webhook-ingest
+    spec:
+      containers:
+        - name: ingest
+          image: webhook-service:latest
+          args: ["python", "-m", "src.webhook_service.workers.ingest"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: webhook-secrets
+                  key: DATABASE_URL
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: webhook-secrets
+                  key: ENCRYPTION_KEY
+            - name: RPC_ENDPOINTS
+              valueFrom:
+                configMapKeyRef:
+                  name: webhook-config
+                  key: RPC_ENDPOINTS

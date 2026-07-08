@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cursor/
+.DS_Store
+*.log
